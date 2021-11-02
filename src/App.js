@@ -1,12 +1,17 @@
-import React, { useEffect } from "react";
-import { Header, SpeedDial,Content } from "./components";
+import React, { useEffect,useState } from "react";
+import { Header, SpeedDial,ClassesContent } from "./components";
 import axios from "axios";
 
 function App() {
+  const [classes,setClasses] = useState([]);
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/classes")
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        console.log(res.data)
+        setClasses(res.data)
+      })
       .catch((error) => {
         
         console.log(error);
@@ -15,7 +20,7 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Content/>
+      <ClassesContent classes={classes}/>
       <SpeedDial />
     </div>
   );
