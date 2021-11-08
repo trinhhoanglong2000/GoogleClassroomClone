@@ -7,7 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from "@mui/icons-material/Add";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { makeStyles } from "@mui/styles";
-import {default as UseContext} from '../../Context/context'
+import {useState} from 'react'
 
 import CreateClass from "../Dialog/CreateClass";
 const useStyles = makeStyles((theme) => ({
@@ -23,10 +23,14 @@ const useStyles = makeStyles((theme) => ({
 export default function BasicSpeedDial() {
   const classes = useStyles();
   
-  const { createClassDialog, setCreateClassDialog } =UseContext()
+  const [createClassDialog, setCreateClassDialog ] =useState(false);
 
   const createClass = () =>{
     setCreateClassDialog(true)
+  }
+  const closeCreateClass = () =>{
+    setCreateClassDialog(false)
+
   }
   const joinClass = () =>{
   
@@ -60,7 +64,7 @@ export default function BasicSpeedDial() {
           />
         ))}
       </SpeedDial>
-      <CreateClass />
+      <CreateClass open={createClassDialog} onClose={closeCreateClass}/>
     </Box>
   );
 }

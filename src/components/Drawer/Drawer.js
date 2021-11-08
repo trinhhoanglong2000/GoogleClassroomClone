@@ -1,7 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -77,9 +76,10 @@ export default function SwipeableTemporaryDrawer() {
     <div>
       {["left"].map((anchor) => (
         <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>
+          <Box >
             {/* {anchor} */}
             <IconButton
+              onClick={toggleDrawer(anchor, true)}
               className={classes.icon}
               edge="start"
               
@@ -88,7 +88,7 @@ export default function SwipeableTemporaryDrawer() {
             >
               <MenuIcon />
             </IconButton>
-          </Button>
+          </Box>
           <SwipeableDrawer
             anchor={anchor}
             open={state[anchor]}

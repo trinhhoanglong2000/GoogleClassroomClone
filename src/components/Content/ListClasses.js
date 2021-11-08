@@ -15,11 +15,6 @@ export const ListClasses = ({ classes }) => {
         );
       })}
 
-      {/* <Grid item xs={12} sm={6} md={3} lg={2}>
-        <Box>
-          <ClassCard />
-        </Box>
-      </Grid> */}
     </Grid>
   );
 };
