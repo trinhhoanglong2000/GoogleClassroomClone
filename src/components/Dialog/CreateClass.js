@@ -16,10 +16,10 @@ import axios from "axios";
 export default function CreateClass({open,onClose}) {
   const [loading,setLoading] = useState(false);
   const [input, setInput] = useState({
-    name: null,
-    Section: null,
-    Subject: null,
-    Room: null,
+    name: "",
+    Section: "",
+    Subject: "",
+    Room: "",
   });
   
   

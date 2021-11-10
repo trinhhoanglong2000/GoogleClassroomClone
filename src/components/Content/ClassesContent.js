@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import axios from "axios";
 import { ListClasses } from "./ListClasses";
+import { SpeedDial } from "../"
 import LinearProgress from "@mui/material/LinearProgress";
 
 import { URL } from "../../api";
@@ -29,6 +30,8 @@ export const ClassesContent = () => {
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
       
       { loading? <LinearProgress />:<ListClasses classes={classes} /> }
+      <SpeedDial />
+
     </Container>
   );
 };

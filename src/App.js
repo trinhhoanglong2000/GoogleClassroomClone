@@ -1,15 +1,33 @@
 import React from "react";
-import { Header, SpeedDial,ClassesContent } from "./components";
+import { Header, ClassesContent, Login,Register } from "./components";
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  
+} from "react-router-dom";
 
 function App() {
-  
   return (
-    <div className="App">
-      <Header />
-      <ClassesContent/>
-      <SpeedDial />
-    </div>
+    <Router>
+     
+        <Switch>
+          <Route path="/" exact>
+            <Header/>
+            <ClassesContent/>
+          </Route>
+          <Route path="/Login">
+            <Login/>
+
+          </Route>
+          <Route path="/Register">
+            <Register/>
+           
+          </Route>
+        </Switch>
+      
+    </Router>
   );
 }
 
