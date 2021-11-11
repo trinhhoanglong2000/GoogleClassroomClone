@@ -15,7 +15,7 @@ import MuiPhoneNumber from 'material-ui-phone-number';
 import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles((theme) => ({
     mt: {
-        marginTop:10,
+        marginTop:'10px!important',
         width:'100%'
       
     },
@@ -68,7 +68,7 @@ function Register() {
           border: "1px solid black",
           borderRadius: "5px",
           width: 368,
-          height: 500,
+          height: 520,
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "center" }}>

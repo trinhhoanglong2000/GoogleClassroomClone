@@ -1,32 +1,24 @@
 import React from "react";
-import { Header, ClassesContent, Login,Register } from "./components";
+import { Header, ClassesContent, Login, Register } from "./components";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <Router>
-     
-        <Switch>
-          <Route path="/" exact>
-            <Header/>
-            <ClassesContent/>
-          </Route>
-          <Route path="/Login">
-            <Login/>
-
-          </Route>
-          <Route path="/Register">
-            <Register/>
-           
-          </Route>
-        </Switch>
-      
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Header />
+              <ClassesContent />
+            </>
+          }
+        ></Route>
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Register" element={<Register />} />
+      </Routes>
     </Router>
   );
 }

@@ -47,7 +47,7 @@ function Login() {
           border: "1px solid black",
           borderRadius: "5px",
           width: 368,
-          height: 500,
+          height: 520,
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -130,7 +130,7 @@ function Login() {
               borderRadius: 5,
               background: "linear-gradient(to right, #536976, #292e49);",
               marginBottom: 1,
-              marginTop: 1,
+              marginTop: 3,
             }}
           >
             Sign In
