@@ -11,8 +11,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import LinearProgress from '@mui/material/LinearProgress';
 
 // import { default as UseContext } from "../../Context/context";
-
-import axios from "axios";
+import { createClass } from "../../api";
 export default function CreateClass({open,onClose}) {
   const [loading,setLoading] = useState(false);
   const [input, setInput] = useState({
@@ -30,12 +29,13 @@ export default function CreateClass({open,onClose}) {
       
     else {
       setLoading(true)
-      await axios.post("https://googleclone-backend.herokuapp.com/classes", {
-        name: input.name,
-        Section: input.Section,
-        Subject: input.Subject,
-        Room: input.Room,
-      });
+      // await axios.post("https://googleclone-backend.herokuapp.com/classes", {
+      //   name: input.name,
+      //   Section: input.Section,
+      //   Subject: input.Subject,
+      //   Room: input.Room,
+      // });
+      await createClass(input.name,input.Section,input.Subject,input.Room);
       setLoading(false);
       onClose()
     }

@@ -1,37 +1,28 @@
 import React, { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
-import axios from "axios";
-import { ListClasses } from "./ListClasses";
-import { SpeedDial } from "../"
-import LinearProgress from "@mui/material/LinearProgress";
 
-import { URL } from "../../api";
+import { ListClasses } from "./ListClasses";
+import { SpeedDial } from "../";
+import LinearProgress from "@mui/material/LinearProgress";
+import {  getAllClass } from "../../api";
+
+
 export const ClassesContent = () => {
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    
+  useEffect(() => GetAllClass(), []);
+  const GetAllClass = async () => {
     setLoading(true);
-    axios
-       
-      .get( `${URL}/classes`)
-      .then((res) => {
-        console.log(res.data);
-        setClasses(res.data);
-        setLoading(false);
+    const data = await getAllClass();
 
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    if (data) setClasses(data);
+    setLoading(false);
+  };
   return (
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
-      
-      { loading? <LinearProgress />:<ListClasses classes={classes} /> }
+      {loading ? <LinearProgress /> : <ListClasses classes={classes} />}
       <SpeedDial />
-
     </Container>
   );
 };
