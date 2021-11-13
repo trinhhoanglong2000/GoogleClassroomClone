@@ -4,8 +4,7 @@ import Container from "@mui/material/Container";
 import { ListClasses } from "./ListClasses";
 import { SpeedDial } from "../";
 import LinearProgress from "@mui/material/LinearProgress";
-import {  getAllClass } from "../../api";
-
+import { getAllClass } from "../../api";
 
 export const ClassesContent = () => {
   const [classes, setClasses] = useState([]);
@@ -14,9 +13,14 @@ export const ClassesContent = () => {
   useEffect(() => GetAllClass(), []);
   const GetAllClass = async () => {
     setLoading(true);
-    const data = await getAllClass();
+    try {
+      const data = await getAllClass();
 
-    if (data) setClasses(data);
+      if (data) setClasses(data);
+    } catch (error) {
+      console.log(error);
+    }
+
     setLoading(false);
   };
   return (

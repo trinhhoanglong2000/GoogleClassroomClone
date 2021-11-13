@@ -8,46 +8,44 @@ import DialogContent from "@mui/material/DialogContent";
 
 import DialogTitle from "@mui/material/DialogTitle";
 
-import LinearProgress from '@mui/material/LinearProgress';
+import LinearProgress from "@mui/material/LinearProgress";
 
 // import { default as UseContext } from "../../Context/context";
 import { createClass } from "../../api";
-export default function CreateClass({open,onClose}) {
-  const [loading,setLoading] = useState(false);
+export default function CreateClass({ open, onClose }) {
+  const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
     name: "",
     Section: "",
     Subject: "",
     Room: "",
   });
-  
-  
-  const handleClickCreate = async () => {
 
-    if (input.name==null)
-      alert("Class name is required");
-      
+  const handleClickCreate = async () => {
+    if (input.name == null) alert("Class name is required");
     else {
-      setLoading(true)
+      setLoading(true);
       // await axios.post("https://googleclone-backend.herokuapp.com/classes", {
       //   name: input.name,
       //   Section: input.Section,
       //   Subject: input.Subject,
       //   Room: input.Room,
       // });
-      await createClass(input.name,input.Section,input.Subject,input.Room);
+      try {
+        await createClass(input.name, input.Section, input.Subject, input.Room);
+      } catch (error) {
+        console.log(error);
+      }
       setLoading(false);
-      onClose()
+      onClose();
     }
   };
 
- 
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   return (
     <div>
-      
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>Create class</DialogTitle>
         <DialogContent>
@@ -101,13 +99,14 @@ export default function CreateClass({open,onClose}) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} disabled={loading}>Cancel</Button>
+          <Button onClick={onClose} disabled={loading}>
+            Cancel
+          </Button>
           <Button type="submit" onClick={handleClickCreate} disabled={loading}>
             Create
           </Button>
         </DialogActions>
       </Dialog>
-      
     </div>
   );
 }

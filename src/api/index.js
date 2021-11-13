@@ -19,12 +19,13 @@ export const getAllClass = async () =>{
     return data;
 }
 export const createClass = async (name,Section,Subject,Room) =>{
-
-    await axios.post(`${URL}/classes`, {
+    
+    const test = await axios.post(`${URL}/classes/addClass`, {
         name: name,
-        Section: Section,
-        Subject: Subject,
-        Room: Room,
-      });
-
+        section: Section,
+        subject: Subject,
+        room: Room,
+      })
+     
+    console.log(test)
 }
