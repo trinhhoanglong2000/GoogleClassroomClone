@@ -1,5 +1,5 @@
+import FacebookLogin from 'react-facebook-login';
 import React, { useState ,useEffect} from "react";
-
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
 import { Box } from "@mui/system";
@@ -51,7 +51,9 @@ function Login() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
+  const responseFacebook = (response) => {
+    console.log(response);
+  }
   const Login = async () => {
     setLoading(true);
     let result = {};
@@ -212,6 +214,14 @@ function Login() {
             >
               Sign in with Google
             </Button>
+            <FacebookLogin
+              appId="2971266416460358"
+              autoLoad={true}
+              fields="name,email,picture"
+              callback={responseFacebook}
+              cssClass="my-facebook-button-class"
+              icon="fa-facebook"
+            />
           </Container>
         </Box>
       </Container>
