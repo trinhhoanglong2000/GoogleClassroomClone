@@ -4,10 +4,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useEffect, useState } from 'react';
-import Paper from '@material-ui/core/Paper'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import {  useState } from 'react';
+import Paper from '@mui/material/Paper'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 
 function submitForm(event = null) {  
     if(event){
