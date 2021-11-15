@@ -8,8 +8,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import { makeStyles } from "@mui/styles";
 import EmailIcon from '@mui/icons-material/Email';
 import LinkIcon from '@mui/icons-material/Link';
-//import {useState} from 'react'
-
+import {useState} from 'react'
+import GetLink from "../../../GetLink";
+import MailInvite from "../../../MailInvite";
 const useStyles = makeStyles((theme) => ({
   pos: {
     position: "fixed",
@@ -18,16 +19,30 @@ const useStyles = makeStyles((theme) => ({
     
   },
 }));
-const clicked = () => {
+const LinkOp = () => {
   
 }
 
 export default function BasicSpeedDial() {
   const classes = useStyles();
+  const [mailInviteDialog, setMailInviteDialog ] =useState(false);
+  const [linkInviteDialog, setLinkInviteDialog ] =useState(false);
+  const getMailInvite = () =>{
+    setMailInviteDialog(true)
+  }
+  const closeMailInvite = () =>{
+    setMailInviteDialog(false)
 
+  }
+  const getLinkInvite = ()=>{
+    setLinkInviteDialog(true)
+  }
+  const closeLinkInvite = () =>{
+    setLinkInviteDialog(false)
+  }
   const actions = [
-    { icon: <EmailIcon />, name: "Mail invitation" ,onClick: clicked},
-    { icon: <LinkIcon />, name: "Get link invitation" ,onClick: clicked},
+    { icon: <EmailIcon />, name: "Mail invitation" ,onClick: getMailInvite},
+    { icon: <LinkIcon />, name: "Get link invitation" ,onClick: getLinkInvite},
   ];
 
 
@@ -54,6 +69,9 @@ export default function BasicSpeedDial() {
           />
         ))}
       </SpeedDial>
+      <MailInvite openMode={mailInviteDialog} onClose={closeMailInvite} />
+      <GetLink openMode={linkInviteDialog} onClose={closeLinkInvite} />
+     
     </Box>
   );
 }

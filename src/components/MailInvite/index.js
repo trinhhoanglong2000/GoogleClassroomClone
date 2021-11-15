@@ -10,17 +10,18 @@ import {  useState ,useEffect} from 'react';
 import Paper from '@mui/material/Paper'
 
 import { useNavigate } from "react-router-dom";
-function submitForm(event = null) {
+async function submitForm(event = null) {
+    let Data =null;
   if (event) {
     event.preventDefault();
   }
   var form = document.querySelector("#createForm");
 
-  var tokenAccess = form.querySelector('input[name="tokenAccess"]').value;
-  var url =
-    "http://localhost:5000/mail/AccessInviteLink?accessToken=" + tokenAccess;
-  console.log(localStorage.getItem("token"));
-  fetch(url, {
+  var classid = form.querySelector('input[name="classID"]').value;
+  var mail = form.querySelector('input[name="email"]').value;
+  var url = "http://localhost:5000/mail/sendMail?classid=" + classid + "&mails=" + mail;
+  console.log(url)
+  await fetch(url, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       Accept: "application/json",
@@ -30,15 +31,17 @@ function submitForm(event = null) {
   })
     .then((response) => response.json())
     .then((responseData) => {
-      alert(responseData["message"]);
+        Data = responseData
+     
     })
     .catch(function (res) {
-      alert(res.data);
+        console.log(res.err)
     });
+    return Data
 }
 // export default CreateNew
 
-export default function AccessLink({ openMode, onClose }) {
+export default function MailInvite({ openMode, onClose }) {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const params = Object.fromEntries(urlSearchParams.entries());
   const navigate = useNavigate();
@@ -47,13 +50,9 @@ export default function AccessLink({ openMode, onClose }) {
       navigate("/Login");
     }
   }, [navigate]);
-
-  const [tokenAccess, setTokenAccess] = useState(params["accessToken"]);
+  const [classID, setClassID] = useState();
+  const [email, setEmail] = useState();
   const [open, setOpen] = useState(!!params["accessToken"]);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
     try {
@@ -62,45 +61,53 @@ export default function AccessLink({ openMode, onClose }) {
       navigate("/");
     }
   };
-  const handleSubmit = (event) => {
-    submitForm(event);
+  const handleSubmit = async (event) => {
+    var accessResuil = await submitForm(event)
+    if(accessResuil.message!=null){
+        alert(accessResuil.message)
+    }
   };
 
   return (
-    <div className={"d-flex justify-content-center "}>
+    <div className={""}>
       <Dialog
         open={!!params["accessToken"] ? open : openMode}
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Enter your access token"}
+        <DialogTitle >
+          {"Enter  mail"}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <Paper className={"d-flex flex-conlumn justify-content-center "}>
+            <Paper className={""}>
               <form
-                className={"justify-content-center pt-5 pl-3 pr-3 pb-5 "}
+                className={""}
                 id={"createForm"}
                 onSubmit={handleSubmit}
               >
-                <div className={"d-flex justify-content-center mb-2 p-5 "}>
+                
                   <TextField
-                    label="Token Access"
-                    name={"tokenAccess"}
-                    value={tokenAccess}
-                    onInput={(e) => setTokenAccess(e.target.value)}
+                    label="classID"
+                    name={"classID"}
+                    fullWidth
+                    value={classID}
+                    onInput={(e) => setClassID(e.target.value)}
                   />
-                </div>
-              </form>
+
+                <TextField
+                    label="Email"
+                    name={"email"}
+                    value={email}
+                    fullWidth
+                    onInput={(e) => setEmail(e.target.value)}
+                />    
+            </form>
             </Paper>
-          </DialogContentText>
+        
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Exit</Button>
           <Button onClick={handleSubmit} autoFocus>
-            Join Class
+            Send invite mail
           </Button>
         </DialogActions>
       </Dialog>

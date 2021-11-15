@@ -36,9 +36,9 @@ export default function BasicSpeedDial() {
     setJoinclassDialog(false)
   }
   const joinClass = () =>{
-    console.log("click")
+  
     setJoinclassDialog(true)
-    console.log(joinClassDialog)
+
   }
   const actions = [
     { icon: <AddIcon />, name: "Create" ,onClick: createClass},
