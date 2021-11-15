@@ -26,6 +26,11 @@ export const createClass = async (name, Section, Subject, Room) => {
     section: Section,
     subject: Subject,
     room: Room,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
   });
 
   return test;
