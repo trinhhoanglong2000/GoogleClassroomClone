@@ -15,34 +15,38 @@ function submitForm(event = null) {
         event.preventDefault();
     }
     var form = document.querySelector("#createForm");
-    var data = {
-        tokenAccess : form.querySelector('input[name="tokenAccess"]').value,
-    }
-    fetch("https://btcn3-api-18127141.herokuapp.com/classes/addClass",
+   
+    var tokenAccess = form.querySelector('input[name="tokenAccess"]').value;
+    var url ="http://localhost:5000/mail/AccessInviteLink?accessToken=" + tokenAccess;
+    console.log(localStorage.getItem("token"))
+    fetch(url,
     {
         headers: {
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
         },
-        method: "POST",
-        body: JSON.stringify(data)
+        method: "GET",
     })
-    .then(function(res){ 
-        alert("Access successful !!!");
-    })
-    .catch(function(res){ alert("Access failure"); })
+    .then((response) => response.json())
+      .then((responseData) => {
+        alert(responseData["message"]);})
+    .catch(function(res){ alert(res.data); })
 }
 // export default CreateNew
 
 
 
 export default function AccessLink({openMode, onClose}) {
+    
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
     const navigate = useNavigate();
-    const [tokenAccess, setTokenAccess] = useState(params["classname"]);
-    const [open, setOpen] = useState(!!params["classname"]);
+    if(localStorage.getItem("token").length == 0){
+      navigate('/Login')
+    }
+    const [tokenAccess, setTokenAccess] = useState(params["accessToken"]);
+    const [open, setOpen] = useState(!!params["accessToken"]);
     const handleClickOpen = () => {
         setOpen(true);
       };
@@ -63,7 +67,7 @@ export default function AccessLink({openMode, onClose}) {
   return (
      <div className={"d-flex justify-content-center "} >
      <Dialog
-       open={!!params["classname"]?open:openMode}
+       open={!!params["accessToken"]?open:openMode}
        onClose={handleClose}
        aria-labelledby="alert-dialog-title"
        aria-describedby="alert-dialog-description"

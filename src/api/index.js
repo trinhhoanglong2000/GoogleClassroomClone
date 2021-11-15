@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = process.env.REACT_APP_API_URL;
+const URL = "http://localhost:5000";
 
 export const getAllClass = async () => {
   let data = null;

@@ -22,7 +22,7 @@ function App() {
         ></Route>
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
-        <Route path="/AccessLink" element={<AccessLink  open={null} onClose={null} />} />
+        <Route path="/AccessInviteLink" element={<AccessLink  open={null} onClose={null} />} />
       </Routes>
     </Router>
   );
