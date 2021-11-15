@@ -4,11 +4,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {  useState } from 'react';
-import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import {  useState } from 'react';
+import Paper from '@material-ui/core/Paper'
 
+import { useNavigate } from "react-router-dom";
 function submitForm(event = null) {  
     if(event){
         event.preventDefault();
@@ -34,10 +35,12 @@ function submitForm(event = null) {
 }
 // export default CreateNew
 
-const urlSearchParams = new URLSearchParams(window.location.search);
-const params = Object.fromEntries(urlSearchParams.entries());
-export default function AccessLink() {
 
+
+export default function AccessLink({openMode, onClose}) {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    const navigate = useNavigate();
     const [tokenAccess, setTokenAccess] = useState(params["classname"]);
     const [open, setOpen] = useState(!!params["classname"]);
     const handleClickOpen = () => {
@@ -46,18 +49,21 @@ export default function AccessLink() {
     
       const handleClose = () => {
         setOpen(false);
+        try{
+            onClose()
+        }catch(err){
+            navigate('/')
+        }
+       
       };
     const handleSubmit = (event)=> {
     submitForm(event)
     }
-
+    
   return (
      <div className={"d-flex justify-content-center "} >
-     <Button size="medium" variant="contained" color="primary" onClick={handleClickOpen}>
-       Add new
-     </Button>
      <Dialog
-       open={open}
+       open={!!params["classname"]?open:openMode}
        onClose={handleClose}
        aria-labelledby="alert-dialog-title"
        aria-describedby="alert-dialog-description"
@@ -71,15 +77,15 @@ export default function AccessLink() {
          <form className={"justify-content-center pt-2 pl-3 pr-3 pb-2 "}  
                     id={"createForm"}
                     onSubmit={handleSubmit} >
-                    <div className ={"d-flex justify-content-center mb-2 "}>
-
+                        <div className ={"d-flex justify-content-center mb-2 "}>
+                       
                         <TextField
                             label = "Token Access"
                             name = {"tokenAccess"}
                             value={tokenAccess}
                             onInput={ e=>setTokenAccess(e.target.value)}
                         />
-                    </div>
+                        </div>
         </form>
            </Paper>
          </DialogContentText>
