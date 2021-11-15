@@ -11,7 +11,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import LinearProgress from "@mui/material/LinearProgress";
 
 // import { default as UseContext } from "../../Context/context";
-import { createClass } from "../../api";
+import { createClass } from "../../../api";
 export default function CreateClass({ open, onClose }) {
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({

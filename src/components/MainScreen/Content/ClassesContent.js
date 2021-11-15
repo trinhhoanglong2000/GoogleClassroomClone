@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 
 import { ListClasses } from "./ListClasses";
-import { SpeedDial } from "../";
+import { SpeedDial } from "../../";
 import LinearProgress from "@mui/material/LinearProgress";
-import { getAllClass } from "../../api";
+import { getAllClass } from "../../../api";
 import { Navigate} from "react-router-dom";
 
 export const ClassesContent = () => {
