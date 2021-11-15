@@ -1,13 +1,13 @@
-import * as React from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { useState, useEffect } from "react";
-import Paper from "@material-ui/core/Paper";
+import * as React from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import {  useState ,useEffect} from 'react';
+import Paper from '@mui/material/Paper'
 
 import { useNavigate } from "react-router-dom";
 function submitForm(event = null) {

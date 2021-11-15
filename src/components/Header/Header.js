@@ -26,6 +26,7 @@ export default function Header() {
     setAnchorEl(null);
   };
   return (
+    <>
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
@@ -112,6 +113,9 @@ export default function Header() {
           {/*  */}
         </Toolbar>
       </AppBar>
+      
     </Box>
+    
+    </>
   );
 }
