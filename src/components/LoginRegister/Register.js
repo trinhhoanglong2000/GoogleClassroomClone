@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
@@ -21,6 +21,12 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import LinearProgress from "@mui/material/LinearProgress";
+import Alert from "@mui/material/Alert";
+import moment from 'moment';
+import { Register as RegisterAccount } from "../../api";
+import { useNavigate } from "react-router-dom";
+
 const useStyles = makeStyles((theme) => ({
   mt: {
     marginTop: "10px!important",
@@ -29,6 +35,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 function Register() {
   const classes = useStyles();
+  const navigate = useNavigate();
+  const [height, setHeight] = useState(630);
+  const [err, setErr] = useState(false);
+  const [errmessage,setErrmessage] = useState("")
+  const [loading, setLoading] = useState(false);
+
   const [input, setInput] = useState({
     firstname: "",
     lastname: "",
@@ -66,7 +78,52 @@ function Register() {
     });
   };
 
+  const register = async () => {
+    setLoading(true);
+    let result = {};
+    
+    try {
+      const DateOfBirth = (moment(input.dob, 'DD/MM/YYYY').format('YYYY/MM/DD'))
+      let phone = input.phone.slice(3)
+      phone='0'+phone
+      result = await RegisterAccount (
+        input.firstname,
+        input.lastname,
+        input.email,
+        input.password,
+        phone,
+      
+        DateOfBirth,
+        input.gender
+      )
+    } catch (error) {}
+    
+    if (result.success) {
+     
+      setHeight(630);
+      setErr(false);
+    
+      
+      navigate("/Login",{replace:true});
+
+    } else {
+     
+
+      setHeight(700);
+      setErr(true);
+      setErrmessage(result.message)
+    }
+    setLoading(false);
+  };
+  useEffect(() => {
+    
+    return () => {
+      setErr({}); 
+    };
+}, []);
   return (
+    <>
+    {loading && <LinearProgress />}
     <Container
       maxWidth="xl"
       sx={{
@@ -82,7 +139,7 @@ function Register() {
           border: "1px solid black",
           borderRadius: "5px",
           width: 368,
-          height: 630,
+          height: {height},
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -104,6 +161,11 @@ function Register() {
         >
           Sign Up
         </Typography>
+        {err && (<Container>
+            <Alert variant="outlined" severity="error">
+              {errmessage}
+            </Alert></Container>
+          )}
         <Container maxWidth="sm">
           <Toolbar sx={{ padding: "0!important" }} variant="regular">
             <TextField
@@ -112,6 +174,7 @@ function Register() {
               name="firstname"
               variant="standard"
               size="medium"
+              onChange={handleChange}
             />
             <TextField
               label="LastName"
@@ -119,6 +182,7 @@ function Register() {
               variant="standard"
               sx={{ flexGrow: 1, marginLeft: 2 }}
               fullWidth
+              onChange={handleChange}
             />
           </Toolbar>
           <MuiPhoneNumber
@@ -219,6 +283,7 @@ function Register() {
             <Link to="/Login"> Sign In</Link>
           </Typography>
           <Button
+            onClick={register}
             type="submit"
             variant="contained"
             fullWidth
@@ -233,7 +298,7 @@ function Register() {
           </Button>
         </Container>
       </Box>
-    </Container>
+    </Container></>
   );
 }
 

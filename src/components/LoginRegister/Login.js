@@ -62,7 +62,7 @@ function Login() {
       setHeight(520);
       setErr(false);
       localStorage.setItem('token',result.token)
-      console.log("HEHE")
+    
       
       navigate("/",{replace:true});
 
