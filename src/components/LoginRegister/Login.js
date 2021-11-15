@@ -217,7 +217,7 @@ function Login() {
             </Button>
             <FacebookLogin
               appId="2971266416460358"
-              autoLoad={true}
+              autoLoad={false}
               fields="name,email,picture"
               callback={responseFacebook}
               cssClass="my-facebook-button-class"

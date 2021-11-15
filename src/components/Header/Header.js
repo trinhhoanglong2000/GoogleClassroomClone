@@ -14,9 +14,11 @@ import Logout from '@mui/icons-material/Logout';
 import IconButton from "@mui/material/IconButton";
 
 import Avatar from "@mui/material/Avatar";
-
+import { useNavigate } from "react-router";
 import { default as Drawer } from "../Drawer/Drawer";
 export default function Header() {
+  const navigate = useNavigate()
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -25,6 +27,11 @@ export default function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const signout = ()=>{
+    console.log("HEHE")
+    localStorage.clear()
+    navigate('/login')
+  }
   return (
     <>
     <Box sx={{ flexGrow: 1 }}>
@@ -103,7 +110,7 @@ export default function Header() {
               </ListItemIcon>
               Settings
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={signout}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>
