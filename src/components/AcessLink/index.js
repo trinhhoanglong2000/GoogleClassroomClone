@@ -4,60 +4,70 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {  useState } from 'react';
-import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import {  useState } from 'react';
+import Paper from '@mui/material/Paper'
 
+import { useNavigate } from "react-router-dom";
 function submitForm(event = null) {  
     if(event){
         event.preventDefault();
     }
     var form = document.querySelector("#createForm");
-    var data = {
-        tokenAccess : form.querySelector('input[name="tokenAccess"]').value,
-    }
-    fetch("https://btcn3-api-18127141.herokuapp.com/classes/addClass",
+   
+    var tokenAccess = form.querySelector('input[name="tokenAccess"]').value;
+    var url ="http://localhost:5000/mail/AccessInviteLink?accessToken=" + tokenAccess;
+    console.log(localStorage.getItem("token"))
+    fetch(url,
     {
         headers: {
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
         },
-        method: "POST",
-        body: JSON.stringify(data)
+        method: "GET",
     })
-    .then(function(res){ 
-        alert("Access successful !!!");
-    })
-    .catch(function(res){ alert("Access failure"); })
+    .then((response) => response.json())
+      .then((responseData) => {
+        alert(responseData["message"]);})
+    .catch(function(res){ alert(res.data); })
 }
 // export default CreateNew
 
-const urlSearchParams = new URLSearchParams(window.location.search);
-const params = Object.fromEntries(urlSearchParams.entries());
-export default function AccessLink() {
 
-    const [tokenAccess, setTokenAccess] = useState(params["classname"]);
-    const [open, setOpen] = useState(!!params["classname"]);
+
+export default function AccessLink({openMode, onClose}) {
+    
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    const navigate = useNavigate();
+    if(localStorage.getItem("token").length == 0){
+      navigate('/Login')
+    }
+    const [tokenAccess, setTokenAccess] = useState(params["accessToken"]);
+    const [open, setOpen] = useState(!!params["accessToken"]);
     const handleClickOpen = () => {
         setOpen(true);
       };
     
       const handleClose = () => {
         setOpen(false);
+        try{
+            onClose()
+        }catch(err){
+            navigate('/')
+        }
+       
       };
     const handleSubmit = (event)=> {
     submitForm(event)
     }
-
+    
   return (
      <div className={"d-flex justify-content-center "} >
-     <Button size="medium" variant="contained" color="primary" onClick={handleClickOpen}>
-       Add new
-     </Button>
      <Dialog
-       open={open}
+       open={!!params["accessToken"]?open:openMode}
        onClose={handleClose}
        aria-labelledby="alert-dialog-title"
        aria-describedby="alert-dialog-description"
@@ -71,15 +81,15 @@ export default function AccessLink() {
          <form className={"justify-content-center pt-2 pl-3 pr-3 pb-2 "}  
                     id={"createForm"}
                     onSubmit={handleSubmit} >
-                    <div className ={"d-flex justify-content-center mb-2 "}>
-
+                        <div className ={"d-flex justify-content-center mb-2 "}>
+                       
                         <TextField
                             label = "Token Access"
                             name = {"tokenAccess"}
                             value={tokenAccess}
                             onInput={ e=>setTokenAccess(e.target.value)}
                         />
-                    </div>
+                        </div>
         </form>
            </Paper>
          </DialogContentText>

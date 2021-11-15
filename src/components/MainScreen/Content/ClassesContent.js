@@ -25,7 +25,11 @@ export const ClassesContent = () => {
     }
     if (data.success) setClasses(data.data)
     else{
+      
+      if (data.message ==="jwt expired")
+        localStorage.clear();
       setAuth(false);
+
      
 
     }

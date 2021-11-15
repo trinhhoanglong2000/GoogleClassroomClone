@@ -8,7 +8,7 @@ import AddIcon from "@mui/icons-material/Add";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { makeStyles } from "@mui/styles";
 import {useState} from 'react'
-
+import AccessLink from "../../AcessLink";
 import CreateClass from "../Dialog/CreateClass";
 const useStyles = makeStyles((theme) => ({
   pos: {
@@ -24,7 +24,7 @@ export default function BasicSpeedDial() {
   const classes = useStyles();
   
   const [createClassDialog, setCreateClassDialog ] =useState(false);
-
+  const [joinClassDialog, setJoinclassDialog ] =useState(false);
   const createClass = () =>{
     setCreateClassDialog(true)
   }
@@ -32,8 +32,13 @@ export default function BasicSpeedDial() {
     setCreateClassDialog(false)
 
   }
+  const closeJoinClass = ()=>{
+    setJoinclassDialog(false)
+  }
   const joinClass = () =>{
-  
+    console.log("click")
+    setJoinclassDialog(true)
+    console.log(joinClassDialog)
   }
   const actions = [
     { icon: <AddIcon />, name: "Create" ,onClick: createClass},
@@ -65,6 +70,7 @@ export default function BasicSpeedDial() {
         ))}
       </SpeedDial>
       <CreateClass open={createClassDialog} onClose={closeCreateClass}/>
+      <AccessLink openMode={joinClassDialog} onClose={closeJoinClass} />
     </Box>
   );
 }

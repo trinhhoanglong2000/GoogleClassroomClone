@@ -22,10 +22,10 @@ function App() {
         ></Route>
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
-        <Route path="/AccessLink" element={<AccessLink />} />
         <Route path="/ClassDetail" element={<ClassDetail />} />
         <Route path="/ClassDetail/People" element={<People />} />
         <Route path="/ClassDetail/Classwork" element={<People />} />
+        <Route path="/AccessInviteLink" element={<AccessLink  open={null} onClose={null} />} />
       </Routes>
     </Router>
   );

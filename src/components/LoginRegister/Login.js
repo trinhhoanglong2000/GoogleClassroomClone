@@ -13,7 +13,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { IconButton } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import LinearProgress from "@mui/material/LinearProgress";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Navigate } from "react-router-dom";
 //api
 import { Login as LoginAccount } from "../../api";
 function Login() {
@@ -77,6 +77,7 @@ function Login() {
   };
   return (
     <>
+      {localStorage.getItem('token') && <Navigate to="/"/>}
       {loading && <LinearProgress />}
       <Container
         maxWidth="xl"
