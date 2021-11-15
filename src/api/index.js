@@ -21,6 +21,7 @@ export const getAllClass = async () => {
   return data;
 };
 export const createClass = async (name, Section, Subject, Room) => {
+  let message = null;
   const test = await axios.post(`${URL}/classes/addClass`, {
     name: name,
     section: Section,
@@ -31,8 +32,10 @@ export const createClass = async (name, Section, Subject, Room) => {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
+  }).catch((error) => {
+    message = error.response.data;
   });
-
+  if (message != null) return message;
   return test;
 };
 export const Login = async (name, password) => {

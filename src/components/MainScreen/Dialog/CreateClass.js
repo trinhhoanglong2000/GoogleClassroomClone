@@ -9,10 +9,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import LinearProgress from "@mui/material/LinearProgress";
+import { useNavigate } from "react-router-dom";
 
 // import { default as UseContext } from "../../Context/context";
 import { createClass } from "../../../api";
 export default function CreateClass({ open, onClose }) {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
     name: "",
@@ -22,19 +24,28 @@ export default function CreateClass({ open, onClose }) {
   });
 
   const handleClickCreate = async () => {
+    let result = {};
     if (input.name == null) alert("Class name is required");
     else {
       setLoading(true);
-      // await axios.post("https://googleclone-backend.herokuapp.com/classes", {
-      //   name: input.name,
-      //   Section: input.Section,
-      //   Subject: input.Subject,
-      //   Room: input.Room,
-      // });
+
       try {
-        await createClass(input.name, input.Section, input.Subject, input.Room);
+        result = await createClass(
+          input.name,
+          input.Section,
+          input.Subject,
+          input.Room
+        );
       } catch (error) {
         console.log(error);
+      }
+      if (result.success) {
+        //If Success then Redirect to Class detail
+      } else {
+        if (result.message === "jwt expired") {
+          localStorage.clear();
+          navigate('Login')
+        }
       }
       setLoading(false);
       onClose();

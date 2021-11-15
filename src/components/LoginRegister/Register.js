@@ -25,7 +25,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Alert from "@mui/material/Alert";
 import moment from 'moment';
 import { Register as RegisterAccount } from "../../api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Navigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   mt: {
@@ -123,6 +123,8 @@ function Register() {
 }, []);
   return (
     <>
+    {localStorage.getItem('token') && <Navigate to="/"/>}
+
     {loading && <LinearProgress />}
     <Container
       maxWidth="xl"
