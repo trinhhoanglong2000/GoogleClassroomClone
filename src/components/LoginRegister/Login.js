@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
@@ -11,13 +11,33 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
 import GoogleIcon from "@mui/icons-material/Google";
 import { IconButton } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import LinearProgress from "@mui/material/LinearProgress";
+import { useNavigate } from "react-router-dom";
+//api
+import { Login as LoginAccount } from "../../api";
 function Login() {
+  const navigate = useNavigate();
+  const [height, setHeight] = useState(520);
+  const [err, setErr] = useState(false);
+  const [errmessage,setErrmessage] = useState("")
+  const [loading, setLoading] = useState(false);
+
   const [input, setInput] = useState({
+
     email: "",
     password: "",
 
     showPassword: false,
   });
+
+  useEffect(() => {
+    
+    return () => {
+      setErr({}); 
+    };
+}, []);
+
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
@@ -31,140 +51,171 @@ function Login() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const Login = async () => {
+    setLoading(true);
+    let result = {};
+    try {
+      result = await LoginAccount(input.email, input.password);
+    } catch (error) {}
+    if (result.success) {
+      setHeight(520);
+      setErr(false);
+      localStorage.setItem('token',result.token)
+      console.log("HEHE")
+      
+      navigate("/",{replace:true});
+
+    } else {
+      setHeight(560);
+      setErr(true);
+      setErrmessage(result.message)
+    }
+    setLoading(false);
+  };
   return (
-    <Container
-      maxWidth="xl"
-      sx={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Box
+    <>
+      {loading && <LinearProgress />}
+      <Container
+        maxWidth="xl"
         sx={{
-          border: "1px solid black",
-          borderRadius: "5px",
-          width: 368,
-          height: 520,
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Avatar
-            align="center"
-            sx={{ width: 60, height: 60, marginTop: 3, marginBottom: 3 }}
-            variant="square"
-            alt="Remy Sharp"
-            src="https://i.ibb.co/JmZbWBK/743532.png"
-          />
-        </Box>
-
-        <Typography
-          gutterBottom
-          variant="h4"
-          component="div"
-          noWrap
-          align="center"
+        <Box
+          sx={{
+            border: "1px solid black",
+            borderRadius: "5px",
+            width: 368,
+            height: { height },
+          }}
         >
-          Sign In
-        </Typography>
-        <Container maxWidth="sm">
-          <TextField
-            type="email"
-            name="email"
-           
-            label="Email"
-            variant="standard"
-            fullWidth
-            autoFocus
-            margin="dense"
-            value={input.name}
-            onChange={handleChange}
-          />
-        </Container>
-        <Container maxWidth="sm">
-          <TextField
-            password="password"
-            
-            label="Password"
-            variant="standard"
-            fullWidth
-            margin="dense"
-            value={input.password}
-            onChange={handleChange}
-            type={input.showPassword ? "text" : "password"}
-            InputProps={{
-              endAdornment: (
-                <IconButton
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                >
-                  {input.showPassword ? (
-                    <VisibilityOffIcon />
-                  ) : (
-                    <VisibilityIcon />
-                  )}
-                </IconButton>
-              ),
-            }}
-          />
-        </Container>
-        <Container>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Avatar
+              align="center"
+              sx={{ width: 60, height: 60, marginTop: 3, marginBottom: 3 }}
+              variant="square"
+              alt="Remy Sharp"
+              src="https://i.ibb.co/JmZbWBK/743532.png"
+            />
+          </Box>
+
           <Typography
             gutterBottom
-            variant="a"
+            variant="h4"
             component="div"
             noWrap
             align="center"
-            sx={{marginTop:2}}
-          >
-            Don't have an account?
-            <Link to="/Register"> Sign Up</Link>
-          </Typography>
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            sx={{
-              borderRadius: 5,
-              background: "linear-gradient(to right, #536976, #292e49);",
-              marginBottom: 1,
-              marginTop: 3,
-            }}
           >
             Sign In
-          </Button>
-          
-          <Typography
-            gutterBottom
-            variant="subtitle1"
-            component="div"
-            noWrap
-            align="center"
-          >
-            or
           </Typography>
-         
-          <Button
-            variant="contained"
-            startIcon={<GoogleIcon/>}
-            fullWidth
-            sx={{
-              borderRadius: 5,
-              background: "#DD4B39",
-              marginBottom: 1,
-              marginTop: 1,
-              "&:hover": {
+          {err && (<Container>
+            <Alert variant="outlined" severity="error">
+              {errmessage}
+            </Alert></Container>
+          )}
+          <Container maxWidth="sm">
+            <TextField
+              type="email"
+              name="email"
+              label="Email"
+              variant="standard"
+              fullWidth
+              autoFocus
+              margin="dense"
+              value={input.name}
+              onChange={handleChange}
+            />
+          </Container>
+          <Container maxWidth="sm">
+            <TextField
+              name="password"
+              label="Password"
+              variant="standard"
+              fullWidth
+              margin="dense"
+              value={input.password}
+              onChange={handleChange}
+              type={input.showPassword ? "text" : "password"}
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {input.showPassword ? (
+                      <VisibilityOffIcon />
+                    ) : (
+                      <VisibilityIcon />
+                    )}
+                  </IconButton>
+                ),
+              }}
+            />
+          </Container>
+          <Container>
+            <Typography
+              gutterBottom
+              variant="a"
+              component="div"
+              noWrap
+              align="center"
+              sx={{ marginTop: 2 }}
+            >
+              Don't have an account?
+              {!loading && <Link to="/Register"> Sign Up</Link>}
+            </Typography>
+            <Button
+              onClick={Login}
+              disabled={loading}
+              type="submit"
+              variant="contained"
+              fullWidth
+              sx={{
+                borderRadius: 5,
+                background: "linear-gradient(to right, #536976, #292e49);",
+                marginBottom: 1,
+                marginTop: 3,
+              }}
+            >
+              Sign In
+            </Button>
+
+            <Typography
+              gutterBottom
+              variant="subtitle1"
+              component="div"
+              noWrap
+              align="center"
+            >
+              or
+            </Typography>
+
+            <Button
+              disabled={loading}
+              variant="contained"
+              startIcon={<GoogleIcon />}
+              fullWidth
+              sx={{
+                borderRadius: 5,
                 background: "#DD4B39",
-              },
-            }}
-          >
-            Sign in with Google
-          </Button>
-        </Container>
-      </Box>
-    </Container>
+                marginBottom: 1,
+                marginTop: 1,
+                "&:hover": {
+                  background: "#DD4B39",
+                },
+              }}
+            >
+              Sign in with Google
+            </Button>
+          </Container>
+        </Box>
+      </Container>
+    </>
   );
 }
 

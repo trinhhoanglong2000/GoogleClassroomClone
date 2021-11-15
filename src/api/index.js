@@ -7,7 +7,11 @@ export const getAllClass = async () =>{
     let data = null;
     await axios
        
-      .get( `${URL}/classes`)
+      .get( `${URL}/classes`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
       .then((res) => {
         data= res.data
       })
@@ -27,5 +31,18 @@ export const createClass = async (name,Section,Subject,Room) =>{
         room: Room,
       })
      
-    console.log(test)
+    return test
+}
+export const Login = async (name,password) =>{
+  let message = null
+  const test = await axios.post(`${URL}/login`, {
+      
+      username: name,
+      password: password
+    }).catch((error) => {
+      message=error.response.data
+      
+  })
+  if (message !=null) return message
+  return test.data
 }

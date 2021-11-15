@@ -11,26 +11,35 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
 import { Toolbar } from "@mui/material";
 import { IconButton } from "@mui/material";
-import MuiPhoneNumber from 'material-ui-phone-number';
+import MuiPhoneNumber from "material-ui-phone-number";
 import { makeStyles } from "@mui/styles";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 const useStyles = makeStyles((theme) => ({
-    mt: {
-        marginTop:'10px!important',
-        width:'100%'
-      
-    },
-  }));
+  mt: {
+    marginTop: "10px!important",
+    width: "100%",
+  },
+}));
 function Register() {
-    const classes = useStyles();
-    const [input, setInput] = useState({
+  const classes = useStyles();
+  const [input, setInput] = useState({
     firstname: "",
-    lastname:"",
-    email:"",
+    lastname: "",
+    email: "",
     password: "",
-    phone:"",
+    phone: "",
     showPassword: false,
+    dob: "",
+    gender: true,
   });
-  
+
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
@@ -44,13 +53,18 @@ function Register() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  const handleOnChange =(value)=> {
+  const handleOnChange = (value) => {
     setInput({
-        ...input,
-        phone: value,
-      });
-    
- }
+      ...input,
+      phone: value,
+    });
+  };
+  const handleChangeGender = (event) => {
+    setInput({
+      ...input,
+      gender: event.target.value,
+    });
+  };
 
   return (
     <Container
@@ -68,7 +82,7 @@ function Register() {
           border: "1px solid black",
           borderRadius: "5px",
           width: 368,
-          height: 520,
+          height: 630,
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -91,16 +105,30 @@ function Register() {
           Sign Up
         </Typography>
         <Container maxWidth="sm">
-          <Toolbar sx={{padding:'0!important',}} variant="regular">
-            <TextField autoFocus label="FirstName" name="firstname" variant="standard" size='medium' />
-            <TextField label="LastName" name="lastname" variant="standard" sx={{flexGrow: 1,marginLeft:2}} fullWidth />
+          <Toolbar sx={{ padding: "0!important" }} variant="regular">
+            <TextField
+              autoFocus
+              label="FirstName"
+              name="firstname"
+              variant="standard"
+              size="medium"
+            />
+            <TextField
+              label="LastName"
+              name="lastname"
+              variant="standard"
+              sx={{ flexGrow: 1, marginLeft: 2 }}
+              fullWidth
+            />
           </Toolbar>
-          <MuiPhoneNumber defaultCountry={'vn'} onChange={handleOnChange} inputClass={classes.mt}/>
+          <MuiPhoneNumber
+            defaultCountry={"vn"}
+            onChange={handleOnChange}
+            inputClass={classes.mt}
+          />
           <TextField
             type="email"
             name="email"
-            
-
             label="Email"
             variant="standard"
             fullWidth
@@ -111,8 +139,7 @@ function Register() {
         </Container>
         <Container maxWidth="sm">
           <TextField
-            password="password"
-            
+            name="password"
             label="Password"
             variant="standard"
             fullWidth
@@ -135,6 +162,49 @@ function Register() {
               ),
             }}
           />
+        </Container>
+        <Container>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              name="dob"
+              label="Date of birth"
+              value={input.dob}
+              onChange={(value) => {
+                setInput({
+                  ...input,
+                  dob: value,
+                });
+              }}
+              renderInput={({ inputRef, inputProps, InputProps }) => (
+                <TextField
+                  label="Date of birth"
+                  inputProps={inputProps}
+                  InputProps={InputProps}
+                  inputRef={inputRef}
+                  variant="standard"
+                ></TextField>
+              )}
+            />
+          </LocalizationProvider>
+        </Container>
+        <Container sx={{marginTop:'15px'}}>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Gender</FormLabel>
+            <RadioGroup
+              row
+              aria-label="gender"
+              name="controlled-radio-buttons-group"
+              value={input.gender}
+              onChange={handleChangeGender}
+            >
+              <FormControlLabel
+                value={true}
+                control={<Radio />}
+                label="Male"
+              />
+              <FormControlLabel value={false} control={<Radio />} label="Female" />
+            </RadioGroup>
+          </FormControl>
         </Container>
         <Container>
           <Typography
