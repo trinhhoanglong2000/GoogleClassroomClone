@@ -6,6 +6,7 @@ import {
   Register,
   ClassDetail,
   People,
+  Classwork,
 
 } from "./components";
 
@@ -39,7 +40,7 @@ function App() {
         >
           <Route path="/ClassDetail/:id" element={<ClassDetail />} />
           <Route path="/ClassDetail/:id/People" element={<People />} />
-          <Route path="/ClassDetail/:id/Classwork" element={<People />} />
+          <Route path="/ClassDetail/:id/Classwork" element={<Classwork />} />
         </Route>
         <Route
           path="/AccessInviteLink"
