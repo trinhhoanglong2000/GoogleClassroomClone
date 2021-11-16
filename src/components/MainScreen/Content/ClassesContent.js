@@ -30,8 +30,6 @@ export const ClassesContent = () => {
         localStorage.clear();
       setAuth(false);
 
-     
-
     }
     setLoading(false);
   };

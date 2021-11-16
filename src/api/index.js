@@ -20,6 +20,27 @@ export const getAllClass = async () => {
 
   return data;
 };
+export const getAllAccountFromClass = async (id) => {
+  let data = null;
+  await axios
+
+    .get(`${URL}/classesaccount/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+
+  return data;
+};
+
+
+
 export const createClass = async (name, Section, Subject, Room) => {
   let message = null;
   const test = await axios.post(`${URL}/classes/addClass`, {

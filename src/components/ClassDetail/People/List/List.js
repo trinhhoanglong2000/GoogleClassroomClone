@@ -8,19 +8,46 @@ import Avatar from '@mui/material/Avatar';
 import FolderIcon from '@mui/icons-material/Folder';
 
 export default function AlignItemsList({ data }) {
+  
   return (
-    <List sx={{ width: '100%'}}>
+    <>
+    {data? <List sx={{ width: '100%'}}>
       {data.map((item, key) => {
+        
         return (
-          <>
-            <ListItem key={key}>
+          <div key={key}>
+         
+            <ListItem >
               <ListItemAvatar>
                 <Avatar>
                   <FolderIcon />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={item}
+                primary={item.username}
+              />
+            </ListItem>
+            <Divider sx={{width:'100%'}} />
+
+          </div>
+        );
+      })}
+
+    </List>:<></>}
+    {/* <List sx={{ width: '100%'}}>
+      {data.map((item, key) => {
+        
+        return (
+          <>
+         
+            <ListItem key={item.id}>
+              <ListItemAvatar>
+                <Avatar>
+                  <FolderIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={item.username}
               />
             </ListItem>
             <Divider sx={{width:'100%'}} />
@@ -29,6 +56,7 @@ export default function AlignItemsList({ data }) {
         );
       })}
 
-    </List>
+    </List> */}
+    </>
   );
 }
