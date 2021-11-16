@@ -1,16 +1,19 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import ToggleButton from './ToggleButton/ToggleButton'
-import SpeedDial from './SpeedDial/SpeedDial'
+import ToggleButton from "./ToggleButton/ToggleButton";
+import SpeedDial from "./SpeedDial/SpeedDial";
 
- const SubHeader = () => {
+const SubHeader = () => {
   return (
     <>
-    <Box sx={{display: 'flex',justifyContent: 'center', marginBottom:'10px'}} fullWidth><ToggleButton /></Box>
-    <SpeedDial></SpeedDial>
-
+      <Box
+        sx={{ display: "flex", justifyContent: "center", marginBottom: "10px",width:'100vw' }}
+      >
+        <ToggleButton />
+      </Box>
+      <SpeedDial></SpeedDial>
     </>
   );
 };
 
-export default SubHeader
+export default SubHeader;
