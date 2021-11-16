@@ -12,7 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import {makeStyles} from '@mui/styles'
-
+import {useNavigate} from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: "15px",
@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SwipeableTemporaryDrawer() {
+  const navigate = useNavigate()
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -41,6 +42,13 @@ export default function SwipeableTemporaryDrawer() {
 
     setState({ ...state, [anchor]: open });
   };
+  const goHome = ()=>{
+    navigate('/')
+  }
+  const item= [{
+    text:'Classes',
+    onClick:goHome,
+  }]
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
@@ -49,12 +57,12 @@ export default function SwipeableTemporaryDrawer() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
+        {item.map((item, index) => (
+          <ListItem button key={index} onClick={item.onClick}>
             <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary={item.text} />
           </ListItem>
         ))}
       </List>
