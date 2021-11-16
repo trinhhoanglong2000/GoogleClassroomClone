@@ -2,7 +2,7 @@ import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+//import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -10,7 +10,7 @@ import {  useState ,useEffect} from 'react';
 import Paper from '@mui/material/Paper'
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { useNavigate } from "react-router-dom";
+import {useParams,useNavigate } from "react-router-dom";
 async function submitForm(event = null) {
     let Data =null;
   if (event) {
@@ -45,6 +45,8 @@ async function submitForm(event = null) {
 export default function GetLink({ openMode, onClose }) {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const params = Object.fromEntries(urlSearchParams.entries());
+  const localParams = useParams();
+  
   const navigate = useNavigate();
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -55,7 +57,7 @@ export default function GetLink({ openMode, onClose }) {
   const handleChangeChecked = (event) => {
     setChecked(event.target.checked);
   };
-  const [classID, setClassID] = useState();
+  const [classID, setClassID] = useState(localParams.id);
   const [tokenAccess, setTokenAccess] = useState();
   const [linkAccess, setLinkAccess] = useState();
   const [open, setOpen] = useState(!!params["accessToken"]);
@@ -99,8 +101,12 @@ export default function GetLink({ openMode, onClose }) {
                     label="classID"
                     name={"classID"}
                     fullWidth
+                    inputProps={
+                      { readOnly: true, }
+                    }
                     value={classID}
                     onInput={(e) => setClassID(e.target.value)}
+                   
                   />
                <FormControlLabel
                   label="Teacher invite"
