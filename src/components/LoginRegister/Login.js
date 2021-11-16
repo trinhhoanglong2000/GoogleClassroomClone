@@ -14,6 +14,7 @@ import { IconButton } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useNavigate,Navigate } from "react-router-dom";
+import GoogleLogin from 'react-google-login';
 //api
 import { Login as LoginAccount } from "../../api";
 function Login() {
@@ -53,6 +54,20 @@ function Login() {
   };
   const responseFacebook = (response) => {
     console.log(response);
+  }
+  const responseGoogle = async (response) => {
+    
+    var url ="http://localhost:5000/Login/Google?tokenId=" + response.tokenId;
+    await fetch(url, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+          console.log(responseData)
+      })
+      .catch(function (res) {
+          console.log(res.err)
+      });
   }
   const Login = async () => {
     setLoading(true);
@@ -223,11 +238,17 @@ function Login() {
               cssClass="my-facebook-button-class"
               icon="fa-facebook"
             />
+            <GoogleLogin
+              clientId="1033685070621-hdqk1q42vbkd9d8vv595i3ij9gqopvf6.apps.googleusercontent.com"
+              buttonText="Login"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
           </Container>
         </Box>
       </Container>
     </>
   );
 }
-
 export default Login;
