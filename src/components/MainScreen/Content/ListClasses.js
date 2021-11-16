@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import ClassCard from "../ClassCard/ClassCard";
 export const ListClasses = ({ classes }) => {
+  
   return (
     <Grid container spacing={2} justifyContent="flex-start" column={12} >
       {classes.map((item, key) => {
