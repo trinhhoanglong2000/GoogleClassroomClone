@@ -8,8 +8,9 @@ function UseContext() {
 }
 
 export function ContextProvider({ children }) {
-  const [createClassDialog, setCreateClassDialog] = useState(false);
-  const value = { createClassDialog, setCreateClassDialog };
+  const [username, setUsername] = useState("");
+  const [id,setId] = useState("");
+  const value = { username,setUsername,id,setId};
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 export default UseContext;

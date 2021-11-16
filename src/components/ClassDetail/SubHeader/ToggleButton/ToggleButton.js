@@ -30,7 +30,7 @@ export default function ColorToggleButton() {
         sx={{ color: "black" }}
       >
         {" "}
-        ClassWorkd
+        ClassWork
       </ToggleButton>
       <ToggleButton
         value="People"
