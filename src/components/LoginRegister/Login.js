@@ -9,7 +9,6 @@ import { TextField } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
-import GoogleIcon from "@mui/icons-material/Google";
 import { IconButton } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -56,9 +55,13 @@ function Login() {
     console.log(response);
   }
   const responseGoogle = async (response) => {
+    if (!response.tokenId){
+      return 
+    }
     setLoading(true);
     let data={}
     // let url ="http://localhost:5000/Login/Google?tokenId=" + response.tokenId;
+    
     let url =`${process.env.REACT_APP_API_URL}/Login/Google?tokenId=${response.tokenId}`
     await fetch(url, {
       method: "GET",
@@ -232,7 +235,6 @@ function Login() {
             </Typography>
             
             <GoogleLogin
-              
               clientId="1033685070621-hdqk1q42vbkd9d8vv595i3ij9gqopvf6.apps.googleusercontent.com"
               buttonText="Login"
               onSuccess={responseGoogle}
