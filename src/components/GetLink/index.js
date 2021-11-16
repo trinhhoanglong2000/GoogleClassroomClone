@@ -8,7 +8,8 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import {  useState ,useEffect} from 'react';
 import Paper from '@mui/material/Paper'
-
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { useNavigate } from "react-router-dom";
 async function submitForm(event = null) {
     let Data =null;
@@ -16,9 +17,10 @@ async function submitForm(event = null) {
     event.preventDefault();
   }
   var form = document.querySelector("#createForm");
-
+  var isTeacherInvite = form.querySelector('input[name="teacherInvite"]').checked;
+  console.log(isTeacherInvite)
   var classid = form.querySelector('input[name="classID"]').value;
-  var url = "http://localhost:5000/mail/CreateInviteLink?classid=" + classid;
+  var url = "http://localhost:5000/mail/CreateInviteLink?classid=" + classid +"&isTeacherInvite=" + isTeacherInvite;
   console.log(url)
   await fetch(url, {
     headers: {
@@ -49,6 +51,10 @@ export default function GetLink({ openMode, onClose }) {
       navigate("/Login");
     }
   }, [navigate]);
+  const [checked, setChecked] = React.useState(true);
+  const handleChangeChecked = (event) => {
+    setChecked(event.target.checked);
+  };
   const [classID, setClassID] = useState();
   const [tokenAccess, setTokenAccess] = useState();
   const [linkAccess, setLinkAccess] = useState();
@@ -96,6 +102,15 @@ export default function GetLink({ openMode, onClose }) {
                     value={classID}
                     onInput={(e) => setClassID(e.target.value)}
                   />
+               <FormControlLabel
+                  label="Teacher invite"
+                   control = {
+                    <Checkbox
+                    name={"teacherInvite"}
+                    checked={checked}
+                    onChange={handleChangeChecked}
+                  /> 
+                  }/>
             </form>
                   <TextField
                     label="Token Access"
@@ -113,8 +128,10 @@ export default function GetLink({ openMode, onClose }) {
                     value={linkAccess}
                     onInput={(e) => setLinkAccess(e.target.value)}
                   />
-               
-          
+                 
+                 
+                 
+                
             </Paper>
         
         </DialogContent>
