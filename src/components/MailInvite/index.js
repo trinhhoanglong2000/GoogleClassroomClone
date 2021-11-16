@@ -10,6 +10,7 @@ import {  useState ,useEffect} from 'react';
 import Paper from '@mui/material/Paper'
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import LinearProgress from "@mui/material/LinearProgress";
 
 import {useParams,useNavigate } from "react-router-dom";
 async function submitForm(event = null) {
@@ -19,11 +20,11 @@ async function submitForm(event = null) {
   }
   var form = document.querySelector("#createForm");
   var isTeacherInvite = form.querySelector('input[name="teacherInvite"]').checked;
-  console.log(isTeacherInvite)
+
   var classid = form.querySelector('input[name="classID"]').value;
   var mail = form.querySelector('input[name="email"]').value;
-  var url = "http://localhost:5000/mail/sendMail?classid=" + classid + "&mails=" + mail + "&isTeacherInvite=" + isTeacherInvite;
-  console.log(url)
+  // var url = "http://localhost:5000/mail/sendMail?classid=" + classid + "&mails=" + mail + "&isTeacherInvite=" + isTeacherInvite;
+  var url = `${process.env.REACT_APP_API_URL}/mail/sendMail?classid=${classid}&mails=${mail}&isTeacherInvite=${isTeacherInvite}`
   await fetch(url, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -45,6 +46,8 @@ async function submitForm(event = null) {
 // export default CreateNew
 
 export default function MailInvite({ openMode, onClose }) {
+  const [loading,setLoading] = useState(false)
+
   const urlSearchParams = new URLSearchParams(window.location.search);
   const params = Object.fromEntries(urlSearchParams.entries());
   const localParams = useParams();
@@ -71,10 +74,13 @@ export default function MailInvite({ openMode, onClose }) {
     setChecked(event.target.checked);
   };
   const handleSubmit = async (event) => {
+    setLoading(true)
     var accessResuil = await submitForm(event)
     if(accessResuil.message!=null){
         alert(accessResuil.message)
     }
+    setLoading(false)
+
   };
 
   return (
@@ -83,6 +89,7 @@ export default function MailInvite({ openMode, onClose }) {
         open={!!params["accessToken"] ? open : openMode}
         onClose={handleClose}
       >
+        {loading && <LinearProgress/>}
         <DialogTitle >
           {"Enter  mail"}
         </DialogTitle>
@@ -126,8 +133,8 @@ export default function MailInvite({ openMode, onClose }) {
         
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Exit</Button>
-          <Button onClick={handleSubmit} autoFocus>
+          <Button onClick={handleClose} disabled={loading}>Exit</Button>
+          <Button onClick={handleSubmit} disabled={loading} autoFocus>
             Send invite mail
           </Button>
         </DialogActions>

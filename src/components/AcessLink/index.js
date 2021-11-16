@@ -17,9 +17,9 @@ function submitForm(event = null) {
   var form = document.querySelector("#createForm");
 
   var tokenAccess = form.querySelector('input[name="tokenAccess"]').value;
-  var url =
-    "http://localhost:5000/mail/AccessInviteLink?accessToken=" + tokenAccess;
-  console.log(localStorage.getItem("token"));
+  // var url =
+  //   "http://localhost:5000/mail/AccessInviteLink?accessToken=" + tokenAccess;
+  var url = `${process.env.REACT_APP_API_URL}/mail/AccessInviteLink?accessToken=${tokenAccess}`
   fetch(url, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

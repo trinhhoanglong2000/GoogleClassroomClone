@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://localhost:5000";
+const URL = process.env.REACT_APP_API_URL ;
 
 export const getAccount = async () => {
   let data = null;

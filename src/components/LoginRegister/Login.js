@@ -56,18 +56,36 @@ function Login() {
     console.log(response);
   }
   const responseGoogle = async (response) => {
-    
-    var url ="http://localhost:5000/Login/Google?tokenId=" + response.tokenId;
+    setLoading(true);
+    let data={}
+    // let url ="http://localhost:5000/Login/Google?tokenId=" + response.tokenId;
+    let url =`${process.env.REACT_APP_API_URL}/Login/Google?tokenId=${response.tokenId}`
     await fetch(url, {
       method: "GET",
     })
       .then((response) => response.json())
       .then((responseData) => {
-          console.log(responseData)
+        data=responseData
+        
       })
       .catch(function (res) {
+          data=res.err
           console.log(res.err)
       });
+      if (data.success){
+        setHeight(520);
+        setErr(false);
+        localStorage.setItem('token',data.token)
+      
+        
+        navigate("/",{replace:true});
+      }
+      else{
+        setHeight(560);
+        setErr(true);
+        setErrmessage(data.message)
+      }
+      setLoading(false);
   }
   const Login = async () => {
     setLoading(true);
@@ -212,24 +230,15 @@ function Login() {
             >
               or
             </Typography>
-
-            <Button
-              disabled={loading}
-              variant="contained"
-              startIcon={<GoogleIcon />}
-              fullWidth
-              sx={{
-                borderRadius: 5,
-                background: "#DD4B39",
-                marginBottom: 1,
-                marginTop: 1,
-                "&:hover": {
-                  background: "#DD4B39",
-                },
-              }}
-            >
-              Sign in with Google
-            </Button>
+            
+            <GoogleLogin
+              
+              clientId="1033685070621-hdqk1q42vbkd9d8vv595i3ij9gqopvf6.apps.googleusercontent.com"
+              buttonText="Login"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
             <FacebookLogin
               appId="2971266416460358"
               autoLoad={false}
@@ -238,13 +247,7 @@ function Login() {
               cssClass="my-facebook-button-class"
               icon="fa-facebook"
             />
-            <GoogleLogin
-              clientId="1033685070621-hdqk1q42vbkd9d8vv595i3ij9gqopvf6.apps.googleusercontent.com"
-              buttonText="Login"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy={'single_host_origin'}
-            />
+            
           </Container>
         </Box>
       </Container>
