@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
@@ -15,29 +15,28 @@ import Slide from "@mui/material/Slide";
 import TextField from "@mui/material/TextField";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function ManageAccount({ open, setOpen, account }) {
+export default function ManageAccount({ open, setOpen, account, setAccount }) {
   const handleClose = () => {
     setOpen(false);
   };
+
   const [input, setInput] = useState({
     firstname: "",
     lastname: "",
 
     phone: "",
     showPassword: false,
-    
-    
   });
 
-  
   const handleChange = (e) => {
-    console.log(e.target.value)
-    setInput({ ...input, [e.target.name]: e.target.value });
+    setAccount({ ...account, [e.target.name]: e.target.value });
   };
   const handleClickShowPassword = () => {
     setInput({
@@ -88,7 +87,7 @@ export default function ManageAccount({ open, setOpen, account }) {
               variant="standard"
               size="medium"
               onChange={handleChange}
-              
+              defaultValue={account.firstname}
             />
             <TextField
               label="LastName"
@@ -96,11 +95,12 @@ export default function ManageAccount({ open, setOpen, account }) {
               variant="standard"
               sx={{ marginLeft: 2 }}
               onChange={handleChange}
-              
+              defaultValue={account.lastname}
             />
           </Toolbar>
           
           <TextField
+          sx={{width:'50%',display:'block',marginBottom:'10px'}}
             name="password"
             label="Password"
             variant="standard"
@@ -123,6 +123,30 @@ export default function ManageAccount({ open, setOpen, account }) {
               ),
             }}
           />
+          
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                name="dob"
+                label="Date of birth"
+                value={account.dob}
+                inputFormat="dd/MM/yyyy"
+                onChange={(value) => {
+                  setAccount({
+                    ...account,
+                    dob: value,
+                  });
+                }}
+                renderInput={({ inputRef, inputProps, InputProps }) => (
+                  <TextField
+                    label="Date of birth"
+                    inputProps={inputProps}
+                    InputProps={InputProps}
+                    inputRef={inputRef}
+                    variant="standard"
+                  ></TextField>
+                )}
+              />
+            </LocalizationProvider>
           
         </Container>
       </Dialog>

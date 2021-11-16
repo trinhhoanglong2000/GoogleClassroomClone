@@ -61,7 +61,7 @@ export default function Header() {
   return (
     <>
       {!auth && <Navigate to="/login" />}
-      <ManageAccount open={openDialog} setOpen={setOpenDialog} account={account}/>
+      <ManageAccount open={openDialog} setOpen={setOpenDialog} account={account} setAccount={setAccount}/>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
           position="static"

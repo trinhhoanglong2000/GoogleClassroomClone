@@ -84,6 +84,7 @@ function Register() {
     
     try {
       const DateOfBirth = (moment(input.dob, 'DD/MM/YYYY').format('YYYY/MM/DD'))
+     
       let phone = input.phone.slice(3)
       phone='0'+phone
       result = await RegisterAccount (
@@ -235,6 +236,7 @@ function Register() {
               name="dob"
               label="Date of birth"
               value={input.dob}
+              inputFormat	='dd/MM/yyyy'
               onChange={(value) => {
                 setInput({
                   ...input,
@@ -243,6 +245,7 @@ function Register() {
               }}
               renderInput={({ inputRef, inputProps, InputProps }) => (
                 <TextField
+                
                   label="Date of birth"
                   inputProps={inputProps}
                   InputProps={InputProps}
