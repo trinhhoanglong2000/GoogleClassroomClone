@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { useParams, Navigate } from 'react-router-dom'
 import LinearProgress from "@mui/material/LinearProgress";
 import { getAllAccountFromClass } from '../../../api'
-import { getAllClass } from "../../../api";
+
 export const People = () => {
 
     const params = useParams();
@@ -28,7 +28,7 @@ export const People = () => {
         }
         if (data.success) {
             const teacher = data.data.filter(word => word.type === true);
-            console.log(teacher)
+            
             const student = data.data.filter(word => word.type === false);
             await setClasses({teacher: teacher, student:student})
 
