@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const URL = process.env.REACT_APP_API_URL ;
+console.log(URL);
 
 export const getAccount = async () => {
   let data = null;
@@ -38,6 +39,26 @@ export const getAllClass = async () => {
 
   return data;
 };
+
+export const getGrade = async () => {
+  let data = null;
+  await axios
+
+    .get(`${URL}/Grade`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+
+  return data;
+};
+
 export const getAllAccountFromClass = async (id) => {
   let data = null;
   await axios

@@ -11,8 +11,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
-import {makeStyles} from '@mui/styles'
-import {useNavigate} from 'react-router-dom'
+import { makeStyles } from '@mui/styles'
+import { useNavigate } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: "15px",
@@ -42,12 +42,25 @@ export default function SwipeableTemporaryDrawer() {
 
     setState({ ...state, [anchor]: open });
   };
-  const goHome = ()=>{
+  const goHome = () => {
     navigate('/')
   }
-  const item= [{
-    text:'Classes',
-    onClick:goHome,
+  const goShowGrade = () => {
+    navigate('/ShowGrade')
+  }
+  const item = [{
+    text: 'Classes',
+    onClick: goHome,
+  }]
+  const downItem = [{
+    text: 'Grade',
+    onClick: goShowGrade,
+  }, {
+    text: 'Sent mail',
+    onClick: goHome,
+  }, {
+    text: 'Inbox',
+    onClick: goHome,
   }]
   const list = (anchor) => (
     <Box
@@ -68,12 +81,12 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
+        {downItem.map((text, index) => (
+          <ListItem button key={text.text} onClick={text.onClick}>
             <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary={text.text} />
           </ListItem>
         ))}
       </List>
@@ -90,9 +103,9 @@ export default function SwipeableTemporaryDrawer() {
               onClick={toggleDrawer(anchor, true)}
               className={classes.icon}
               edge="start"
-              
+
               aria-label="menu"
-              sx={{ m: 0,p:0 }}
+              sx={{ m: 0, p: 0 }}
             >
               <MenuIcon />
             </IconButton>

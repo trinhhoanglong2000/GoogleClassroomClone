@@ -7,6 +7,7 @@ import {
   ClassDetail,
   People,
   Classwork,
+  ShowGrade,
 
 } from "./components";
 
@@ -28,6 +29,7 @@ function App() {
         ></Route>
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
+        <Route path="/ShowGrade" element={<ShowGrade />} />
         <Route
           path="/ClassDetail"
           element={
@@ -41,6 +43,7 @@ function App() {
           <Route path="/ClassDetail/:id" element={<ClassDetail />} />
           <Route path="/ClassDetail/:id/People" element={<People />} />
           <Route path="/ClassDetail/:id/Classwork" element={<Classwork />} />
+          
         </Route>
         <Route
           path="/AccessInviteLink"
