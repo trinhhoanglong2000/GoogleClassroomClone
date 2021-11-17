@@ -23,6 +23,7 @@ async function submitForm(event = null) {
 
   var classid = form.querySelector('input[name="classID"]').value;
   var mail = form.querySelector('input[name="email"]').value;
+
   // var url = "http://localhost:5000/mail/sendMail?classid=" + classid + "&mails=" + mail + "&isTeacherInvite=" + isTeacherInvite;
   var url = `${process.env.REACT_APP_API_URL}/mail/sendMail?classid=${classid}&mails=${mail}&isTeacherInvite=${isTeacherInvite}`
   await fetch(url, {
@@ -36,7 +37,8 @@ async function submitForm(event = null) {
     .then((response) => response.json())
     .then((responseData) => {
         Data = responseData
-     
+        
+
     })
     .catch(function (res) {
         console.log(res.err)
@@ -59,7 +61,7 @@ export default function MailInvite({ openMode, onClose }) {
     }
   }, [navigate]);
   const [classID, setClassID] = useState(localParams.id);
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState("");
   const [open, setOpen] = useState(!!params["accessToken"]);
   const handleClose = () => {
     setOpen(false);
@@ -69,16 +71,21 @@ export default function MailInvite({ openMode, onClose }) {
       navigate("/");
     }
   };
-  const [checked, setChecked] = React.useState(true);
+  const [checked, setChecked] = React.useState(false);
   const handleChangeChecked = (event) => {
     setChecked(event.target.checked);
   };
   const handleSubmit = async (event) => {
+    if (email.length===0){
+      alert("EMAIL CAN NOT BE EMPTY")
+      return 
+    }
     setLoading(true)
     var accessResuil = await submitForm(event)
     if(accessResuil.message!=null){
         alert(accessResuil.message)
     }
+
     setLoading(false)
 
   };

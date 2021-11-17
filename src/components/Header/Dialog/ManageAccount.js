@@ -7,6 +7,7 @@ import AppBar from "@mui/material/AppBar";
 
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -18,11 +19,20 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
+import moment from "moment";
+import { updateAccount } from "../../../api";
+import { useNavigate } from "react-router-dom";
+import Alert from "@mui/material/Alert";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function ManageAccount({ open, setOpen, account, setAccount }) {
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState(false);
+  const [errmessage, setErrmessage] = useState("");
+  const navigate = useNavigate();
   const handleClose = () => {
     setOpen(false);
   };
@@ -45,6 +55,40 @@ export default function ManageAccount({ open, setOpen, account, setAccount }) {
     });
   };
 
+  const submit = async () => {
+    setLoading(true);
+    let result = {};
+    try {
+      var d = new Date(account.dob);
+      const DateOfBirth = moment(d, "DD/MM/YYYY").format("DD/MM/YYYY");
+      result = await updateAccount(
+        account.firstname,
+        account.lastname,
+        account.password,
+
+        DateOfBirth,
+        account.student_id
+      );
+    } catch (err) {
+      console.log(err);
+    }
+
+    if (result.success) {
+      setErr(false);
+      //handle close
+      setOpen(false);
+
+      setLoading(false);
+    } else {
+      if (result.message === "jwt expired") {
+        localStorage.clear();
+        navigate("/login");
+      }
+      setErr(true);
+      setErrmessage(result.message);
+    }
+    setLoading(false);
+  };
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -74,12 +118,28 @@ export default function ManageAccount({ open, setOpen, account, setAccount }) {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Manage Profile
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            <Button autoFocus color="inherit" onClick={submit}>
               save
             </Button>
           </Toolbar>
         </AppBar>
+        {loading && <LinearProgress />}
         <Container>
+          {err && (
+            <Container>
+              <Alert variant="outlined" severity="error">
+                {errmessage}
+              </Alert>
+            </Container>
+          )}
+          <TextField
+            label="StudentID"
+            name="student_id"
+            variant="standard"
+            size="medium"
+            onChange={handleChange}
+            defaultValue={account.student_id}
+          />
           <Toolbar sx={{ padding: "0!important" }} variant="regular">
             <TextField
               label="FirstName"
@@ -98,9 +158,9 @@ export default function ManageAccount({ open, setOpen, account, setAccount }) {
               defaultValue={account.lastname}
             />
           </Toolbar>
-          
+
           <TextField
-          sx={{width:'50%',display:'block',marginBottom:'10px'}}
+            sx={{ width: "50%", display: "block", marginBottom: "10px" }}
             name="password"
             label="Password"
             variant="standard"
@@ -123,31 +183,30 @@ export default function ManageAccount({ open, setOpen, account, setAccount }) {
               ),
             }}
           />
-          
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                name="dob"
-                label="Date of birth"
-                value={account.dob}
-                inputFormat="dd/MM/yyyy"
-                onChange={(value) => {
-                  setAccount({
-                    ...account,
-                    dob: value,
-                  });
-                }}
-                renderInput={({ inputRef, inputProps, InputProps }) => (
-                  <TextField
-                    label="Date of birth"
-                    inputProps={inputProps}
-                    InputProps={InputProps}
-                    inputRef={inputRef}
-                    variant="standard"
-                  ></TextField>
-                )}
-              />
-            </LocalizationProvider>
-          
+
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              name="dob"
+              label="Date of birth"
+              value={account.dob}
+              inputFormat="dd/MM/yyyy"
+              onChange={(value) => {
+                setAccount({
+                  ...account,
+                  dob: value,
+                });
+              }}
+              renderInput={({ inputRef, inputProps, InputProps }) => (
+                <TextField
+                  label="Date of birth"
+                  inputProps={inputProps}
+                  InputProps={InputProps}
+                  inputRef={inputRef}
+                  variant="standard"
+                ></TextField>
+              )}
+            />
+          </LocalizationProvider>
         </Container>
       </Dialog>
     </div>

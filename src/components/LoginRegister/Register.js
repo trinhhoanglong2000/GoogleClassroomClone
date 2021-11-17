@@ -97,7 +97,9 @@ function Register() {
         DateOfBirth,
         input.gender
       )
-    } catch (error) {}
+    } catch (error) {
+      
+    }
     
     if (result.success) {
      

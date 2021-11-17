@@ -22,7 +22,7 @@ async function submitForm(event = null) {
   var isTeacherInvite = form.querySelector(
     'input[name="teacherInvite"]'
   ).checked;
-  console.log(isTeacherInvite);
+ 
   var classid = form.querySelector('input[name="classID"]').value;
   // var url =
   //   "http://localhost:5000/mail/CreateInviteLink?classid=" +
@@ -30,7 +30,7 @@ async function submitForm(event = null) {
   //   "&isTeacherInvite=" +
   //   isTeacherInvite;
   var url = `${process.env.REACT_APP_API_URL}/mail/CreateInviteLink?classid=${classid}&isTeacherInvite=${isTeacherInvite}`
-  console.log(url);
+
   await fetch(url, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -64,7 +64,7 @@ export default function GetLink({ openMode, onClose }) {
       navigate("/Login");
     }
   }, [navigate]);
-  const [checked, setChecked] = React.useState(true);
+  const [checked, setChecked] = React.useState(false);
   const handleChangeChecked = (event) => {
     setChecked(event.target.checked);
   };
@@ -85,6 +85,8 @@ export default function GetLink({ openMode, onClose }) {
     var accessResuil = await submitForm(event);
     if (accessResuil.messange != null) {
       alert(accessResuil.messange);
+      
+      
     } else {
       setLinkAccess(accessResuil.link);
       setTokenAccess(accessResuil.token);

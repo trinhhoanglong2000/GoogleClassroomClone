@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const URL = process.env.REACT_APP_API_URL ;
-console.log(URL);
+const URL = process.env.REACT_APP_API_URL;
 
 export const getAccount = async () => {
   let data = null;
@@ -21,6 +20,7 @@ export const getAccount = async () => {
 
   return data;
 };
+
 export const getAllClass = async () => {
   let data = null;
   await axios
@@ -99,7 +99,38 @@ export const createClass = async (name, Section, Subject, Room) => {
       message = error.response.data;
     });
   if (message != null) return message;
-  return test;
+  return test.data;
+};
+
+export const updateAccount = async (
+  firstname,
+  lastname,
+  password,
+  dob,
+  studentid
+) => {
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/Account/Update`,
+      {
+        firstname: firstname,
+        lastname: lastname,
+        password: password,
+        dob: dob,
+        student_id:studentid,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
 };
 export const Login = async (name, password) => {
   let message = null;
