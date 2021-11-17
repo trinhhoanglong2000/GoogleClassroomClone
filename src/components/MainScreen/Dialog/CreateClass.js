@@ -36,11 +36,14 @@ export default function CreateClass({ open, onClose }) {
           input.Subject,
           input.Room
         );
+
       } catch (error) {
         console.log(error);
       }
       if (result.success) {
         //If Success then Redirect to Class detail
+        navigate(`/ClassDetail/${result.id}`)
+
       } else {
         if (result.message === "jwt expired") {
           localStorage.clear();

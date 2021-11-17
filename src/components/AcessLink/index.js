@@ -10,7 +10,7 @@ import {  useState ,useEffect} from 'react';
 import Paper from '@mui/material/Paper'
 
 import { useNavigate } from "react-router-dom";
-function submitForm(event = null) {
+async function  submitForm(event = null) {
   if (event) {
     event.preventDefault();
   }
@@ -19,8 +19,9 @@ function submitForm(event = null) {
   var tokenAccess = form.querySelector('input[name="tokenAccess"]').value;
   // var url =
   //   "http://localhost:5000/mail/AccessInviteLink?accessToken=" + tokenAccess;
+  let result = null
   var url = `${process.env.REACT_APP_API_URL}/mail/AccessInviteLink?accessToken=${tokenAccess}`
-  fetch(url, {
+  await fetch(url, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       Accept: "application/json",
@@ -30,11 +31,14 @@ function submitForm(event = null) {
   })
     .then((response) => response.json())
     .then((responseData) => {
-      alert(responseData["message"]);
+      //alert(responseData["message"]);
+      result= responseData
     })
     .catch(function (res) {
+      
       alert(res.data);
     });
+    return result
 }
 // export default CreateNew
 
@@ -62,8 +66,11 @@ export default function AccessLink({ openMode, onClose }) {
       navigate("/");
     }
   };
-  const handleSubmit = (event) => {
-    submitForm(event);
+  const handleSubmit = async (event) => {
+    const a = await submitForm(event);
+    if (a){
+      navigate(`/ClassDetail/${a.classid}`)
+    }
   };
 
   return (

@@ -79,7 +79,7 @@ export const createClass = async (name, Section, Subject, Room) => {
       message = error.response.data;
     });
   if (message != null) return message;
-  return test;
+  return test.data;
 };
 
 export const updateAccount = async (
