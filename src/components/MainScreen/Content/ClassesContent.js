@@ -36,7 +36,8 @@ export const ClassesContent = () => {
   return (
     <>
     {!auth && <Navigate to="/login"/>}
-    <Container maxWidth="xl" sx={{ marginTop: 2 }}>
+    
+    <Container maxWidth="xl" sx={{ marginTop: 2,marginLeft:'5px!important',marginRight:'5px!important' }}>
       {loading ? <LinearProgress /> : <ListClasses classes={classes} />}
       <SpeedDial />
     </Container>
