@@ -9,8 +9,8 @@ import { makeStyles } from "@mui/styles";
 import EmailIcon from '@mui/icons-material/Email';
 import LinkIcon from '@mui/icons-material/Link';
 import {useState} from 'react'
-import GetLink from "../../../GetLink";
-import MailInvite from "../../../MailInvite";
+import GetLink from "../../InvitePeople/GetLink";
+import MailInvite from "../../InvitePeople/MailInvite";
 const useStyles = makeStyles((theme) => ({
   pos: {
     position: "fixed",
